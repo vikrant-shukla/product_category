@@ -22,9 +22,11 @@ class ProductList(generics.ListCreateAPIView):
             flag = False
             cache_key = 'product_list'
             cached_data = cache.get(cache_key)
-            if cached_data:
+            cache_disable_flag = request.data.get("cache") if request.data.get("cache") else False
+            if cached_data and not cache_disable_flag:
                 return Response({"data_from_cache ":cached_data})
         except Exception as error:
+            print(error)
             if error.args[0].lower().find("connection refused") != -1:
                 flag = True
         queryset = self.filter_queryset(self.get_queryset())
@@ -33,7 +35,8 @@ class ProductList(generics.ListCreateAPIView):
         if flag == False and cached_data == None :
             cache.set(cache_key, serializer.data, timeout=120)
         else:
-            data["error_message"] = "Maybe Redis server is not working so data fetching from db"
+            data["message"] = "Maybe Redis server is not working so data fetching from db or cache is disabled \
+or redis cache exceeds its time limit"
         data["data_from_db"]= serializer.data
         return Response(data)
 

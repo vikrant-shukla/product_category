@@ -1,26 +1,32 @@
 from rest_framework import serializers
 from .models import Category, Product
 
+# class SubCategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = ['name']
+
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
+    # parent_category = SubCategorySerializer(read_only =True)
 
     class Meta:
         model = Category
-        fields = '__all__'
-        # depth  = 1
+        fields = ["id","parent_category",'name', "subcategories"]
+        # fields = ["id",'name',"parent_category", "subcategories"]
 
-    def to_representation(self, instance):
-        response =  super().to_representation(instance)
-        # response['parent_category'] = Category.objects.filter(parent_category = response.get("parent_category"))
-        return response
-    
+    # def get_parent_category(self, obj):
+    #     if obj.parent_category is not None:
+    #         return CategorySerializer(obj.parent_category).data
+    #     else:
+    #         return None
+ 
     def get_subcategories(self, obj):
         subcategories = Category.objects.filter(parent_category=obj)
         return CategorySerializer(subcategories, many=True).data
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # CategorySerializer = serializers.SerializerMethodField()
 
     class Meta:
         model = Product

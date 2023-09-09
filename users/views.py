@@ -10,7 +10,6 @@ from .serializers import UserSerializer
 class ExcelDownloadView(APIView):
     def get(self, request):
         users = User.objects.values("id","username","is_active")
-        # users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         df = pd.DataFrame(serializer.data)
         file_path = os.path.join(settings.MEDIA_ROOT,  'sample.xlsx')
@@ -31,5 +30,5 @@ class Send_mail_to_all(APIView):
 class Send_mail_after_call(APIView):
     def get (self, request):
         email = request.data.get("email")
-        send_delayed_email.apply_async(args = (email,), countdown = 10)
+        send_delayed_email.apply_async(args = (email,), countdown = 120)
         return HttpResponse("mail will will send in 2 mins")
