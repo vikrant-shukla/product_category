@@ -1,0 +1,8 @@
+.DS_Store
+venv
+.idea
+.vscode
+__pycache__
+users/__pycache__
+products_creation/__pycache__
+categories_product/__pycache__
