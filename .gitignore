@@ -6,3 +6,4 @@ __pycache__
 users/__pycache__
 products_creation/__pycache__
 categories_product/__pycache__
+.env

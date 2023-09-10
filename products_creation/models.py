@@ -13,7 +13,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField(null=True, blank=False)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category, related_name='products')
 
     def __str__(self):
         return self.name

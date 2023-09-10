@@ -10,7 +10,7 @@ def email_sending(email):
                     Thanks,
                     Django Mailing System
                     """
-    to_email = [email] 
+    to_email = email 
     try:
         mail = EmailMessage(
             mail_subject,
