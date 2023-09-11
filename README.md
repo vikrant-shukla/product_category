@@ -4,6 +4,11 @@
 
 - [About](#about)
 - [Getting Started](#getting_started)
+- [Functionalities](#Functionalities)
+- [Prerequisite](#Prerequisite)
+- [Installation](#Installation)
+- [Installation](#Installation)
+- [Further_Steps](#Further_Steps)
 
 
 ## About <a name = "about"></a>
@@ -35,7 +40,7 @@ Project having numbers of functionalities which are stated below:
 8. Create one functionality that when the api call the mail will be send to user or a list of user's emails from body after 2 minutes of api call with the excel file dumped earlier. 
 
 
-### Prerequisites
+### Prerequisite
 
 What things do you need to install the software and how to install them?
 
@@ -47,7 +52,7 @@ Celery
 Redis
 ```
 
-### Installing
+### Installation
 
 A step-by-step series of examples that tell you how to get a development environment running.
 
@@ -61,7 +66,7 @@ For Windows:  venv/Scripts/activate
 
 pip3 install -r requirements.txt
 ```
-## Further Steps
+### Further_Steps
 
 Start the django,celery and redis server by running the below command in different terminal (ensure the env is activated and dependencies were installed).
 
