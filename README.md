@@ -77,6 +77,7 @@ redis_url=redis://127.0.0.1:6379
 Start the django,celery and redis server by running the below command in different terminal (ensure the env is activated and dependencies were installed).
 
 ```
+python3 manage.py migrate
 python3 manage.py runserver
 celery -A categories_product.celery worker -l info
 redis-server
