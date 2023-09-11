@@ -2,6 +2,8 @@ from django.core.mail import EmailMessage
 from categories_product import settings 
 
 def email_sending(email):
+    """Mail sending to emails with file"""
+    
     mail_subject = "Assignment"
     mail_message = """
                     Hello,

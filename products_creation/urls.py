@@ -1,6 +1,5 @@
-from django.urls import  include, path
-from rest_framework.routers import DefaultRouter
-from products_creation.views import *
+from django.urls import path
+from products_creation.views import CategoryList,CategoryDetail,ProductList,ProductDetail
 
 # router = DefaultRouter()
 # router.register(r'categories', views.CategoryViewSet)

@@ -1,16 +1,10 @@
-# Create a file named create_users.py in your app's management/commands directory
-
-import string
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
-import random
 
 class Command(BaseCommand):
-    help = 'Create 100 users'
+    """Creation of 100 users in the database"""
 
     def handle(self, *args, **options):
-        
-
         for i in range(1, 101):
             username = f'user{i}'
             first_name = f"firstName{i}"

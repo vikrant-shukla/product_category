@@ -1,14 +1,10 @@
 from rest_framework import serializers
-
-
 from .models import Category, Product
 
-# class SubCategorySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Category
-#         fields = ['name']
 
 class CategorySerializer(serializers.ModelSerializer):
+    """Serialize the data of categories and also create category and subcategory"""
+
     subcategories = serializers.SerializerMethodField()
     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
 
@@ -19,12 +15,8 @@ class CategorySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         parent_category_data = validated_data.pop('parent_category', None)
         name = validated_data['name']
-
-        # Check if a category with the same name exists
         existing_category = Category.objects.filter(name=name).first()
-        
         if existing_category:
-            # If the category already exists, return it
             return existing_category
 
         if parent_category_data:
@@ -41,12 +33,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    """Serialize the data of categories and also create, read, update and delete Product
+      and subcategory and also updating the redis cache when data is newly created and updated"""
+
     class Meta:
         model = Product
         fields = '__all__'
 
     def create(self, validated_data):
-        from products_creation.signal_handler import cache_update
+        from products_creation.utils import cache_update
         category_data = validated_data.pop('category', [])
         product = Product.objects.create(**validated_data)
         for category_info in category_data:
@@ -57,6 +52,17 @@ class ProductSerializer(serializers.ModelSerializer):
         cache_update()
         return product
 
+    def update(self, instance, validated_data):
+        from products_creation.utils import cache_update
+        if 'category' in validated_data:
+                new_categories = validated_data.pop('category')
+                instance.category.set(new_categories) 
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        cache_update()
+        return instance
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         category_ids = representation['category']
@@ -65,9 +71,4 @@ class ProductSerializer(serializers.ModelSerializer):
             category = Category.objects.get(id=category_id)
             category_names.append(category.name)
         representation['category'] = category_names
-        print(representation)
         return representation
-    # def to_representation(self, instance):
-    #     response =  super().to_representation(instance)
-    #     response["category_data"] = CategorySerializer(instance.category).data
-    #     return response
