@@ -67,6 +67,12 @@ For Windows:  venv/Scripts/activate
 pip3 install -r requirements.txt
 ```
 ### Further_Steps
+Before starting app you have to create the .env file for prodiving below details:
+```
+email=xyz@gmail.com
+password=app_password # generate with gmail
+redis_url=redis://127.0.0.1:6379
+```
 
 Start the django,celery and redis server by running the below command in different terminal (ensure the env is activated and dependencies were installed).
 
